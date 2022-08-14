@@ -1,0 +1,68 @@
+
+INS: add $r10@rax $r10@rax 305419896  [S64 S64 S64]
+PAT: reg:[S64 S64 S64]  op:[REG REG SIMM32]
+    add_64_mr_imm32 rax 0x12345678
+
+INS: and $r1@rdx $r1@rdx 42  [U32 U32 U32]
+PAT: reg:[U32 U32 U32]  op:[REG REG UIMM32]
+    and_32_mr_imm32 edx 0x2a
+
+INS: xor $r2@rdx $r2@rdx $r3@rcx  [U32 U32 U32]
+PAT: reg:[U32 U32 U32]  op:[REG REG REG]
+    xor_32_r_mr edx ecx
+
+INS: ld $r2@rdx addr1@rdx 32  [U32 A64 S32]
+PAT: reg:[U32 A64 S32]  op:[REG REG SIMM32]
+    mov_32_r_mbis32 edx rdx noindex 0 32
+
+INS: ld $r2@rdx addr1@rdx $r0_U8@rdx  [U32 A64 U8]
+PAT: reg:[U32 A64 U8]  op:[REG REG REG]
+    movzx_64_8_r_mr rdx dl
+    mov_32_r_mbis8 edx rdx rdx 0 0
+
+INS: lea addr1@rdx addr1@rdx $r0_U8@rdx  [A64 A64 U8]
+PAT: reg:[A64 A64 U8]  op:[REG REG REG]
+    movzx_64_8_r_mr rdx dl
+    lea_64_r_mbis8 rdx rdx rdx 0 0
+
+INS: conv bits@STK %U8_857@rcx  [S32 U8]
+PAT: reg:[S32 U8]  op:[SP_REG REG]
+    movzx_32_8_r_mr ecx cl
+    mov_32_mbis32_r rsp noindex 0 0 ecx
+
+INS: conv bitu@STK %U8_857@rcx  [U32 U8]
+PAT: reg:[U32 U8]  op:[SP_REG REG]
+    movzx_32_8_r_mr ecx cl
+    mov_32_mbis32_r rsp noindex 0 4 ecx
+
+INS: lea.mem addr1@rdx COUNTER 66  [A64 _ U8]
+PAT: reg:[A64 INVALID U8]  op:[REG INVALID SIMM32]
+    lea_64_r_mpc32 rdx rip expr:pcrel32:COUNTER:66
+
+INS: beq $r10@rax $r11@r11 int  [S64 S64 _]
+PAT: reg:[S64 S64 INVALID]  op:[REG REG INVALID]
+    cmp_64_r_mr rax r11
+    je_32 expr:loc_pcrel32:int
+
+INS: bsr TestMoveImmediates  [_]
+PAT: reg:[INVALID]  op:[INVALID]
+    call_32 expr:pcrel32:TestMoveImmediates
+
+INS: lea.stk addr1@rdx array $r2@rdx  [A64 _ U32]
+PAT: reg:[A64 INVALID U32]  op:[REG INVALID REG]
+    mov_32_r_mr edx edx
+    lea_64_r_mbis32 rdx rsp rdx 0 8
+
+INS: ld.stk $r2@rdx array 32  [U32 _ S32]
+PAT: reg:[U32 INVALID S32]  op:[REG INVALID SIMM32]
+    mov_32_r_mbis32 edx rsp noindex 0 40
+
+INS: switch $r2@rdx switch_tab  [U32 _]
+PAT: reg:[U32 INVALID]  op:[REG INVALID]
+    mov_32_r_mr eax edx
+    lea_64_r_mpc32 rax rip expr:loc_pcrel32:switch_tab
+    jmp_64_mbis8 rax rax 3 0
+
+INS: add $f1@xmm0 $f1@xmm0 $f2@xmm1  [F32 F32 F32]
+PAT: reg:[F32 F32 F32]  op:[REG REG REG]
+    addss_x_mx xmm0 xmm1

@@ -27,7 +27,10 @@
 //      ret
 
 // Create a Unit with a single function "fib" modelled after ../TestData/fib.asm
-base::Unit MakeFibonacci() {
+
+#include "Base/ir.h"
+
+cwerg::base::Unit MakeFibonacci() {
     using namespace cwerg::base;
 
     Unit unit = UnitNew(StrNew("fibonacci"));

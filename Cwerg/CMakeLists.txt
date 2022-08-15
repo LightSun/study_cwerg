@@ -2,6 +2,8 @@
 project(Cwerg)
 
 set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_FLAGS "-fno-exceptions -O3 -g -fPIC -Wall -Werror -pedantic -Wno-class-memaccess -Wno-sign-compare ${CWERG_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "-static")
 

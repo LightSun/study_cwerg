@@ -27,7 +27,7 @@ CW_Unit MakeFibonacci() {
   CW_BblInsAdd(bbl_difficult, CW_InsNew2(CW_MOV, reg_out, zero));
   CW_BblInsAdd(bbl_difficult, CW_InsNew3(CW_SUB, reg_x, reg_in, one));
   CW_BblInsAdd(bbl_difficult, CW_InsNew1(CW_PUSHARG, reg_x));
-  CW_BblInsAdd(bbl_difficult, CW_InsNew1(CW_BSR, fun));
+  CW_BblInsAdd(bbl_difficult, CW_InsNew1(CW_BSR, fun)); //call func
   CW_BblInsAdd(bbl_difficult, CW_InsNew1(CW_POPARG, reg_x));
   CW_BblInsAdd(bbl_difficult, CW_InsNew3(CW_ADD, reg_out, reg_out, reg_x));
   CW_BblInsAdd(bbl_difficult, CW_InsNew3(CW_SUB, reg_x, reg_in, two));

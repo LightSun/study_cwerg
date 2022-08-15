@@ -830,7 +830,7 @@ def EmitIR(node_stack, meta_info: meta.MetaInfo, node_value, id_gen: common.Uniq
 def main(argv):
     parser = argparse.ArgumentParser(description='translate')
     parser.add_argument('--mode', type=int,
-                        default=0,
+                        default=64,
                         help='mode 32 or 64 bit')
     parser.add_argument('--cpp_args', type=str, default=[], action='append',
                         help='args passed through to the pycparser')

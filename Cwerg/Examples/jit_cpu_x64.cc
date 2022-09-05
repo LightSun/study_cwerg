@@ -101,7 +101,9 @@ int main(int argc, char* argv[]) {
     DumpIns(data, data - memory);
     data += length;
   }
-
+  //ins: not compat with windows
+  memory = (char*)p_mark_executable(memory, 4096);
+  //
   FunPtr f = reinterpret_cast<FunPtr>(memory);
   for (unsigned i = 0; i < 10; ++i) {
     std::cout << std::dec << i << " " << f(i) << "\n";

@@ -35,12 +35,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Cannot stat file " << argv[1] << "\n";
     return 1;
   }
-#ifdef _WIN32
-  THMapAllocatorContext* ctx = THMapAllocatorContext_newWithFd(NULL, fd, TH_ALLOCATOR_MAPPED_SHARED);
-   const void* mapped = (THMapAllocator.malloc)(ctx, s.st_size);
-#else
-   const void* mapped = mmap(nullptr, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-#endif
+  void* _ctx[1];
+  void* mapped  = p_mmap(_ctx, s.st_size);
 
   std::string_view data((const char*)mapped, s.st_size);
   EI_CLASS cls = ElfDetermineClass(data);
@@ -82,13 +78,9 @@ int main(int argc, char* argv[]) {
     std::cout << "unsupported EI_CLASS in " << argv[1] << "\n";
     goto failed;
   }
-#ifdef _WIN32
-  THMapAllocator.free(ctx, (void*)mapped);
-#endif
+  p_ummap(_ctx, mapped);
   return 0;
 failed:
-#ifdef _WIN32
-  THMapAllocator.free(ctx, (void*)mapped);
-#endif
+  p_ummap(_ctx, mapped);
   return 1;
 }
